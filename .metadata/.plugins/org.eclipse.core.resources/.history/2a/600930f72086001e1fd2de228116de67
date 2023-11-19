@@ -1,0 +1,39 @@
+package com.client;
+
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import com.service.Newproduct;
+
+public class Sevicemenu {
+	Newproduct prdservice;
+    Scanner sc;
+    public Sevicemenu()throws SQLException {
+           prdservice=new Newproduct();
+           sc=new Scanner(System.in);
+       }
+       public void displayMenu() throws SQLException{
+           String choice="y";
+           int ch=0;
+           while(choice.equals("y")) {
+               System.out.println("Enter Your Choice");
+               System.out.println("1. Admin Account");
+               System.out.println("2. User Account");
+               System.out.println("3. Exit");
+               ch=sc.nextInt();
+               switch(ch) {
+               case 1:
+                   prdservice.Admin();
+                   break;
+               case 2:
+                   prdservice.User();
+                   break;
+               case 3:
+                   System.exit(0);
+               }
+               System.out.println("If you want to continue (y/n)");
+               choice=sc.next();
+          
+               }
+
+}

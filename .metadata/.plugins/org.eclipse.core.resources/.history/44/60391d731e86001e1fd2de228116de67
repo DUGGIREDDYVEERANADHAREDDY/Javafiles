@@ -1,0 +1,33 @@
+package com.client;
+
+import com.service.Newproduct;
+
+public class Productmain extends Thread
+{
+	Menu m;
+	
+
+}
+    /*public void run()
+    {
+        Newproduct menu;
+        try {
+            menu = new Newproduct();
+            menu.displayMenu();
+            Thread.sleep(100);
+        } catch (SQLException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+    }
+    public static void main(String[] args) throws SQLException{
+        
+      Productmain prdmain=new Productmain();
+      prdmain.start();
+      try {
+            prdmain.join();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }*/
+        

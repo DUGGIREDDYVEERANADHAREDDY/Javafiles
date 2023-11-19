@@ -1,0 +1,67 @@
+package com.dao;
+import java.sql.*;
+import java.util.*;
+
+import com.pojo.Product;
+import com.pojo.Userdetails;
+
+import dataconnection.DataConnection;
+
+public class CustmerOpration {
+	private Connection con;
+    private Scanner sc;
+    PreparedStatement ps;
+    List<Product> list;
+    //Savepoint sp;
+    List<Userdetails> userlist;
+    double totalbill=0;
+    //int count=0;
+    public CustmerOpration()throws SQLException
+    {
+        con=DataConnection.getConnection();
+        sc=new Scanner(System.in);
+        list=new ArrayList<>();
+        userlist=new ArrayList<>();
+         ps=con.prepareStatement("select * from Item");
+         ResultSet rs=ps.executeQuery();
+         while(rs.next())
+         {
+             Product prd=new Product();
+             prd.setPrdid(rs.getInt(1));
+             prd.setPrdname(rs.getString(2));
+             prd.setCatagory(rs.getString(3));
+             prd.setAvailablequantity(4);
+            prd.setBuyingprice(rs.getDouble(5));
+             prd.setSellingprice(rs.getDouble(6));
+             list.add(prd);
+         }
+    }
+     public void sortByprice() throws SQLException{
+         System.out.println("Enter the Price under you want to search  ");
+         ps=con.prepareStatement("select prdid,prdname,sellingprice as price from Item where sellingprice<? order by price asc");
+         ps.setDouble(1, sc.nextDouble());
+         ResultSet rs=ps.executeQuery();
+         while(rs.next())
+         {
+             System.out.println("The product Id is "+rs.getInt(1));
+             System.out.println("The name of Product is "+rs.getString(2));
+             System.out.println("the price of Product is "+rs.getDouble(3));
+             
+         }      
+      }
+     public void sortbyCatagory()
+     {
+         System.out.println("The List of Catagories are ");
+             String catagory=sc.next();
+             list.stream().filter(cat->cat.getCatagory().equalsIgnoreCase(catagory)).forEach(val->
+             {
+                 System.out.println("the product Id is "+val.getPrdid());
+                 System.out.println("The ProductName is "+val.getPrdname());
+                 System.out.println("the price of product "+val.getSellingprice());
+ 
+             });
+     }
+
+
+
+}

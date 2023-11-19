@@ -1,0 +1,138 @@
+package com.dao;
+
+import java.util.*;
+
+import com.pojo.Product;
+
+import dataconnection.DataConnection;
+
+import java.sql.*;
+
+public class Admin {
+	private Connection con;
+    private Scanner sc;
+    PreparedStatement ps;
+    List<Product> list;
+    double profitamt=0;
+    
+    public Admin()throws SQLException
+    {
+        con=DataConnection.getConnection();
+        sc=new Scanner(System.in);
+        list=new ArrayList<Product>();
+        ps=con.prepareStatement("select * from Items");
+        ResultSet rs=ps.executeQuery();
+        while(rs.next())
+        {
+            Product prd=new Product();
+            prd.setPrdid(rs.getInt(1));
+            prd.setPrdname(rs.getString(2));
+            prd.setCatagory(rs.getString(3));
+            prd.setAvailablequantity(4);
+           prd.setBuyingprice(rs.getDouble(5));
+            prd.setSellingprice(rs.getDouble(6));
+            list.add(prd);
+        }
+        
+    }
+    public void insertItem()throws SQLException
+    {
+        ps=con.prepareStatement("insert into Items values(?,?,?,?,?,?)");
+        System.out.println("Enter the ProductId ");
+        ps.setInt(1,sc.nextInt());
+        System.out.println("Enter ProductName ");
+        ps.setString(2, sc.next());
+        System.out.println("Enter the catagory ");
+        ps.setString(3, sc.next());
+        System.out.println("Enter the Available Quantity");
+        ps.setInt(4, sc.nextInt());
+        System.out.println("Enter the Buying price of product ");
+        Double bp=sc.nextDouble();
+        ps.setDouble(5, bp);
+        ps.setDouble(6, (bp*0.5)+bp);
+        int result=ps.executeUpdate();
+        if(result>0)
+        {
+            System.out.println("Data Inserted Successfully...");
+        }
+       
+    }
+    public void listOfproducts()throws SQLException
+    { 
+        
+       
+        for(Product p:list)
+        {
+            
+           System.out.println("The Product Id is "+p.getPrdid());
+           System.out.println("The Product Name is "+p.getPrdname());
+           System.out.println("The Product Catagory is "+p.getCatagory());
+           System.out.println("Available Quantity is "+p.getAvailablequantity());
+           System.out.println("The price of product is "+p.getSellingprice());
+        }
+        
+    }
+    public void searchByprdid() {
+        System.out.println("Enter The Product Id");
+        int id=sc.nextInt();
+        list.stream().filter(is-> is.getPrdid()==id).forEach(de->
+        {
+          System.out.println("The Product Name is "+de.getPrdname()); 
+          System.out.println("The Product Price is "+de.getSellingprice());
+        });  
+        }
+    public void searchByproductname() {
+        System.out.println("Enter The Product Name ");
+        String prdname=sc.next();
+        list.stream().filter(name->name.getPrdname().equalsIgnoreCase(prdname)).forEach(val->
+        {
+            System.out.println("The Product id is "+val.getPrdid());
+            System.out.println("The Product price is "+val.getSellingprice());
+        });
+    }
+    public void searchbyCatagorie() {
+        System.out.println("The List of Catagories are ");
+        String catagory=sc.next();
+        list.stream().filter(cat->cat.getCatagory().equalsIgnoreCase(catagory)).forEach(val->
+        {
+            System.out.println("The product Id is "+val.getPrdid());
+            System.out.println("the product Name is "+val.getPrdname());
+            System.out.println("the price of product "+val.getSellingprice());
+        });
+    }
+    public void totalPrice()
+    {
+        double totalprice=0;
+        for(Product p:list)
+        {
+            totalprice=totalprice+p.getBuyingprice();
+        }
+        System.out.println("The Total price spend on products is "+totalprice);
+    }
+    public void profitAmount()
+    {
+
+       
+        System.out.println("Enter catagorie to calculate the profit ");
+        String cata=sc.next();
+        
+        list.stream().filter(val->val.getCatagory().equalsIgnoreCase(cata)).forEach(profit ->
+        {
+           double amt=profit.getSellingprice()-profit.getBuyingprice();
+           profitamt=amt+profitamt;
+           
+        });
+        System.out.println("The Profit in "+cata+" is "+profitamt);
+    }
+
+
+    public static void main(String[] args) throws SQLException {
+    	Admin sd = new Admin();
+    	sd.insertItem();
+    	
+		
+	}
+
+
+
+}

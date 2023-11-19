@@ -1,0 +1,32 @@
+package com.client;
+
+import java.sql.SQLException;
+
+public class App extends Thread {
+	    public void run()
+	    {
+	        Menu menu;
+	        try {
+	            menu = new Menu();
+	            menu.displayMenu();
+	            Thread.sleep(100);
+	        } catch (SQLException | InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	        
+	    }
+	    public static void main(String[] args) throws SQLException{
+	        
+	      App prdmain=new App();
+	      prdmain.start();
+	      try {
+	            prdmain.join();
+	        } catch (InterruptedException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	        
+	        
+	}
+
+}

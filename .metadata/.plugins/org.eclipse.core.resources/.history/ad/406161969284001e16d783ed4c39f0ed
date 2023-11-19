@@ -1,0 +1,6 @@
+package pakage.com;
+
+public class Main {
+	public SessionFactory  sat;
+
+}

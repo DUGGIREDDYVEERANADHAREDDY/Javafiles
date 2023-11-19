@@ -1,0 +1,105 @@
+package com.service;
+import java.sql.SQLException;
+import java.util.*;
+
+import com.dao.CustmerOpration;
+import com.dao.Uservalidation;
+
+public class Newproduct<Admin> {
+	Scanner sc;
+    Uservalidation uservalid;
+    CustmerOpration cust;
+    com.dao.Admin admin;
+    public Newproduct()throws SQLException
+    {
+        uservalid = new Uservalidation();
+        cust=new CustmerOpration();
+        admin=new com.dao.Admin();
+        sc=new Scanner(System.in);
+        
+    }
+    public void Admin()throws SQLException {
+        uservalid.AdminValidation();
+        String choice="y";
+        int ch=0;
+        while(choice.equals("y")) {
+            System.out.println("Enter Your Choice");
+            System.out.println("1. List of Products");
+            System.out.println("2. Search By Product Id");
+            System.out.println("3. List Of Products by Catagory");
+            System.out.println("4. Search By Product Name");
+            System.out.println("5. Total Amount of Products");
+            System.out.println("6. Profit of Catagory ");
+            System.out.println("7. Insert Items ");
+            System.out.println("8. Exit");
+            ch=sc.nextInt();
+            switch(ch) {
+            case 1:
+                admin.listOfproducts();
+                break;
+            case 2:
+                 admin.searchByprdid();
+                break;
+            case 3:
+                admin.searchbyCatagorie();
+                break;
+            case 4:
+                admin.searchByproductname();
+                break;
+            case 5:
+                admin.totalPrice();
+                break;
+            case 6:
+                admin.profitAmount();
+                break;
+            case 7:
+                admin.insertItem();
+                break;
+            case 8:
+                System.exit(0);
+                break;
+            }
+           System.out.println("If you want to continue (y/n)");
+           choice=sc.next();
+        }
+    }
+    public void User() throws SQLException{
+        uservalid.insert();
+        String choice="y";
+        int ch=0;
+        while(choice.equals("y")) {
+            System.out.println("Enter Your Choice");
+            System.out.println("1. Sort Product By price");
+            System.out.println("2. Check Product By Catagory");
+            System.out.println("3. Purchase Product ");
+            System.out.println("4. Exit");
+            ch=sc.nextInt();
+            switch(ch) {
+            case 1:
+                cust.sortByprice();
+                break;
+            case 2:
+               cust.sortbyCatagory();
+                break;
+            case 3:
+                   cust.purchaseItem(); 
+                   cust.bill();
+                 // cust.closeConnection();
+                  System.exit(0);
+                break;
+            case 4:
+                System.exit(0);
+            }
+            System.out.println("If you want to continue (y/n)");
+            choice=sc.next();
+       
+            }
+     
+        
+    }
+
+}
+
+
+
+}

@@ -1,0 +1,11 @@
+package pakage.com;
+
+public class Main {
+	public SessionFactory  sat;
+	public Sessoin ses;
+	public Transaction tax;
+	public Main()
+	{
+		sat=new Configuration().configure("")
+	}
+}

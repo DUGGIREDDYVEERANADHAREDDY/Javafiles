@@ -1,0 +1,81 @@
+package com.dao;
+import java.util.*;
+
+import dataconnection.DataConnection;
+
+import java.sql.*;
+
+public class Uservalidation {
+	private Connection con;
+    private Scanner sc;
+    PreparedStatement ps;
+    ResultSet rs;
+    static int supercoin;
+    static String username;
+    public Uservalidation()
+    {
+        con=DataConnection.getConnection();
+        sc=new Scanner(System.in);
+    }
+    public void AdminValidation()
+    {
+        System.out.println("Enter the UserName ");
+        String uname=sc.next();
+        System.out.println("Enetr The Password");
+        String pwd=sc.next();
+        if(uname.equalsIgnoreCase("admin")&&pwd.equalsIgnoreCase("admin"))
+        {
+            System.out.println("Welcome to Admin Page..");
+        }
+        else
+        {
+            System.out.println("Invalid UserName or Password");
+            System.exit(0);
+        }    
+    }
+    
+    public void insert() throws SQLException{
+        
+        System.out.println("Enter The User Name");
+        String un=sc.next();
+        System.out.println("Enter The Password");
+        String pwd=sc.next();
+        ps=con.prepareStatement("select * from User where username=? and password=?");
+        ps.setString(1, un);
+        ps.setString(2, pwd);
+        rs=ps.executeQuery();
+        if(!rs.next())
+        {
+            System.out.println("Enter The gmail");
+            String gm=sc.next();
+        ps=con.prepareStatement("insert into User values(?,?,?,?)");
+        ps.setString(1, un);
+        ps.setString(2, pwd);
+        ps.setString(3, gm);
+        ps.setDouble(4, 100);
+        username=un;
+        int result=ps.executeUpdate();
+        
+        if(result>0)
+        {
+            supercoin=100;
+            System.out.println("You are The New User 100 supercoins Added SuceessFully ");
+            System.out.println("Welcome To UserPage....");
+            
+        }
+        }
+        else
+        {
+            username=un;    
+            System.out.println("Welcome To UserPage... ");
+            supercoin=rs.getInt(4);
+        }
+    }
+    public static void main(String[] args) throws SQLException{
+    	Uservalidation uv=new Uservalidation();
+        //uv.AdminValidation();
+        uv.insert();
+    }
+}
+
+

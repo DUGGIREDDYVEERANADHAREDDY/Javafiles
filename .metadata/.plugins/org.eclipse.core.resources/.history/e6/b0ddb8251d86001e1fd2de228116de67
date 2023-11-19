@@ -1,0 +1,84 @@
+package com.dao;
+
+import java.util.*;
+
+import com.pojo.Product;
+
+import dataconnection.DataConnection;
+
+import java.sql.*;
+
+public class Admin {
+	private Connection con;
+    private Scanner sc;
+    PreparedStatement ps;
+    List<Product> list;
+    double profitamt=0;
+    
+    public Admin()throws SQLException
+    {
+        con=DataConnection.getConnection();
+        sc=new Scanner(System.in);
+        list=new ArrayList<Product>();
+        ps=con.prepareStatement("select * from Items");
+        ResultSet rs=ps.executeQuery();
+        while(rs.next())
+        {
+            Product prd=new Product();
+            prd.setPrdid(rs.getInt(1));
+            prd.setPrdname(rs.getString(2));
+            prd.setCatagory(rs.getString(3));
+            prd.setAvailablequantity(4);
+           prd.setBuyingprice(rs.getDouble(5));
+            prd.setSellingprice(rs.getDouble(6));
+            list.add(prd);
+        }
+        
+    }
+    public void insertItem()throws SQLException
+    {
+        ps=con.prepareStatement("insert into Items values(?,?,?,?,?,?)");
+        System.out.println("Enter the ProductId ");
+        ps.setInt(1,sc.nextInt());
+        System.out.println("Enter ProductName ");
+        ps.setString(2, sc.next());
+        System.out.println("Enter the catagory ");
+        ps.setString(3, sc.next());
+        System.out.println("Enter the Available Quantity");
+        ps.setInt(4, sc.nextInt());
+        System.out.println("Enter the Buying price of product ");
+        Double bp=sc.nextDouble();
+        ps.setDouble(5, bp);
+        ps.setDouble(6, (bp*0.5)+bp);
+        int result=ps.executeUpdate();
+        if(result>0)
+        {
+            System.out.println("Data Inserted Successfully...");
+        }
+       
+    }
+    public void listOfproducts()throws SQLException
+    { 
+        
+       
+        for(Product p:list)
+        {
+            
+           System.out.println("The Product Id is "+p.getPrdid());
+           System.out.println("The Product Name is "+p.getPrdname());
+           System.out.println("The Product Catagory is "+p.getCatagory());
+           System.out.println("Available Quantity is "+p.getAvailablequantity());
+           System.out.println("The price of product is "+p.getSellingprice());
+        }
+        
+    }
+    public static void main(String[] args) throws SQLException {
+    	Admin sd = new Admin();
+    	sd.insertItem();
+    	
+		
+	}
+
+
+
+}
